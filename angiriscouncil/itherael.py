@@ -83,7 +83,7 @@ Excluding customer service representatives.
 
     def scribe(self, lore):
         script = []
-        for topic in lore.keys():
+        for topic in sorted(lore.keys()):
             script.append("\n#%s\n\n" % topic)
             sortedData = sorted(lore[topic], key=lambda x: -x.created_utc)
             for datum in sortedData:
