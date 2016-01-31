@@ -31,6 +31,14 @@ Excluding customer service representatives.
 
         return c
 
+    def _get_config(self):
+        subreddit = self.reddit.get_subreddit(self.subreddit)
+        config_json = subreddit.get_wiki_page(
+            self.WIKI_BLUETRACKER_CONFIG).content_md
+        config = json.loads(config_json)
+        config['subreddits'] = [x.lower() for x in config['subreddits']]
+        return config
+
     def track_blues(self, staging=False, logging=False):
         staging_mod = "_staging"
         page = self.WIKI_BLUETRACKER
@@ -42,7 +50,7 @@ Excluding customer service representatives.
         if logging:
             print('Retrieving configuration...')
 
-        config = self.retrieve_config()
+        config = self._get_config()
 
         if logging:
             print('Gathering lore [1/2]...')
@@ -72,14 +80,6 @@ Excluding customer service representatives.
 
         if logging:
             print('Done')
-
-    def retrieve_config(self):
-        subreddit = self.reddit.get_subreddit(self.subreddit)
-        config_json = subreddit.get_wiki_page(
-            self.WIKI_BLUETRACKER_CONFIG).content_md
-        config = json.loads(config_json)
-        config['subreddits'] = [x.lower() for x in config['subreddits']]
-        return config
 
     def scribe(self, lore):
         script = []
