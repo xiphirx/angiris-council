@@ -7,5 +7,5 @@ setup(name='angiriscouncil',
 	  author='Hilal Alsibai',
 	  license='GPLv3',
 	  packages=['angiriscouncil'],
-	  install_requires=['praw'],
+	  install_requires=['praw', 'pytz'],
 	  zip_safe=False)
