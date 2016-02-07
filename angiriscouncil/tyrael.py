@@ -5,7 +5,7 @@ from string import Template
 from . import time_utils
 
 
-class Tyrael:
+class Tyrael(object):
     WIKI_WEEKLY_THREADS_CONFIG = 'weeklythreads_config'
     KEY_TITLE = 'title'
     KEY_TEXT = 'text'

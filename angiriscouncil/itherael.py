@@ -5,7 +5,7 @@ from . import time_utils
 from string import Template
 
 
-class Itherael:
+class Itherael(object):
     WIKI_BLUETRACKER = 'bluetracker'
     WIKI_BLUETRACKER_NOCS = 'bluetracker_nocs'
     WIKI_BLUETRACKER_CONFIG = 'bluetracker_config'
