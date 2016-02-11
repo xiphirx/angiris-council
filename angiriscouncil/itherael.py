@@ -87,7 +87,7 @@ Excluding customer service representatives.
             script.append("\n#%s\n\n" % topic)
             sortedData = sorted(lore[topic], key=lambda x: -x.created_utc)
             for datum in sortedData:
-                link = "%s%s" % (datum.link_url, datum.id)
+                link = "%s?context=3" % datum.permalink
                 script.append(
                     "* /u/%s (%s ago) [%s](%s) by /u/%s\n\n  >%s\n\n" %
                     (datum.author,
