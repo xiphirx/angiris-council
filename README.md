@@ -34,6 +34,22 @@ tyrael.post_weekly_thread()
 
 `post_weekly_thread` will determine the current weekday and post the corresponding thread(s) for that day.
 
+## Auriel
+
+_"Let their potential be developed...for in them I think there is a chance that we may see the end of our struggle at last!"_
+
+Auriel is responsible for updating any configured timers in the sidebar.
+
+### Usage
+
+```python
+import angiriscouncil
+auriel = angiriscouncil.Auriel(reddit, 'subreddit')
+auriel.update_countdown()
+```
+
+`update_countdown` will determine the current timers configured and display their respective percentage complete-ness.
+
 ## License
     Copyright (C) 2016 Hilal Alsibai
 

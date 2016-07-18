@@ -18,7 +18,7 @@ class Tyrael(object):
         self.subreddit = subreddit
 
     def _get_config(self):
-        subreddit = self.reddit.get_subreddit('diablo')
+        subreddit = self.reddit.get_subreddit(self.subreddit)
         config_json = subreddit.get_wiki_page(
             self.WIKI_WEEKLY_THREADS_CONFIG).content_md
         return json.loads(config_json)

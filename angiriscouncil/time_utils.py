@@ -24,12 +24,18 @@ def time_ago(unix_timestamp):
 			return "%d %s%s" % (n, unit, "s" if n > 1 else "")
 	return 'just now'
 
+def pacific_time_now():
+	"""
+	Returns the current time in L.A.
+	"""
+	tz = pytz.timezone('America/Los_Angeles')
+	return datetime.now(tz)
+
 def weekday_word():
 	"""
 	Returns the English name for the current weekday in America/Los_Angeles
 	"""
-	tz = pytz.timezone('America/Los_Angeles')
-	return datetime.now(tz).strftime("%A")
+	return pacific_time_now().strftime("%A")
 
 def us_date():
 	"""
@@ -37,5 +43,4 @@ def us_date():
 	America/Los_Angeles
 	Example: 12/8/92 for Dec 8th 1992
 	"""
-	tz = pytz.timezone('America/Los_Angeles')
-	return datetime.now(tz).strftime("%m/%d/%y")	
+	return pacific_time_now().strftime("%m/%d/%y")	
