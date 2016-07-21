@@ -1,6 +1,7 @@
 
 import praw
 import json
+import math
 from datetime import datetime
 from string import Template
 from . import time_utils
@@ -30,11 +31,17 @@ class Auriel(object):
 
         countdowns_md = ''
         for countdown_config in config:
-            countdown_md = countdown_config + '\n\n[](#openProg)'
+            timer_name = countdown_config
             countdown_config = config[countdown_config]
             start_time = countdown_config[self.KEY_START_TIME]
             end_time = countdown_config[self.KEY_END_TIME]
             current_time = time_utils.pacific_time_now().timestamp()
+
+            if logging:
+                print("Start %s | Current %s | End %s" % (start_time, current_time, end_time))
+
+            days_left = max(0, int(math.ceil(time_utils.days(end_time - current_time))))
+            countdown_md  = "%s, %d days remain\n\n[](#openProg)" % (timer_name, days_left)
 
             percentage = min(1.0, 
                 (current_time - start_time) / (end_time - start_time))

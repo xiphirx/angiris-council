@@ -24,6 +24,9 @@ def time_ago(unix_timestamp):
 			return "%d %s%s" % (n, unit, "s" if n > 1 else "")
 	return 'just now'
 
+def days(seconds):
+	return seconds / (60 * 60 * 24)
+
 def pacific_time_now():
 	"""
 	Returns the current time in L.A.
