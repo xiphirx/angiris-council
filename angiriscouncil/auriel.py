@@ -26,9 +26,6 @@ class Auriel(object):
         config = self._get_config()
         subreddit = self.reddit.get_subreddit(self.subreddit)
 
-        if len(config) == 0:
-            return
-
         countdowns_md = ''
         for countdown_config in config:
             timer_name = countdown_config
