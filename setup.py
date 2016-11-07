@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='angiriscouncil',
-	  version='1.2.1',
+	  version='1.2.2',
 	  description='A collection of bots to perform moderation tasks on r/Diablo',
 	  url='https://www.reddit.com/r/Diablo',
 	  author='Hilal Alsibai',
