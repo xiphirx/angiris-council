@@ -68,7 +68,7 @@ class Tyrael(object):
         sentinel_pos = current_sidebar.find(sentinel)
         current_sidebar = current_sidebar[sentinel_pos + len(sentinel):]
         tpl = Template(
-            "$lastUpdated\n\n#### Weekly $threads\n\n$sentinel$sidebar")
+            "$lastUpdated\n\n#### ~~Weekly *$threads*~~\n\n$sentinel$sidebar")
 
         thread_links = []
         for day in config:
