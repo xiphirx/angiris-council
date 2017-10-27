@@ -18,9 +18,9 @@ class Tyrael(object):
         self.subreddit = subreddit
 
     def _get_config(self):
-        subreddit = self.reddit.get_subreddit(self.subreddit)
-        config_json = subreddit.get_wiki_page(
-            self.WIKI_WEEKLY_THREADS_CONFIG).content_md
+        subreddit = self.reddit.subreddit(self.subreddit)
+        config_json = subreddit.wiki[
+            self.WIKI_WEEKLY_THREADS_CONFIG].content_md
         return json.loads(config_json)
 
     def post_weekly_thread(self, logging=False):
@@ -35,7 +35,7 @@ class Tyrael(object):
 
         if logging:
             print("Found thread(s) to post, posting...")
-        subreddit = self.reddit.get_subreddit(self.subreddit)
+        subreddit = self.reddit.subreddit(self.subreddit)
         mod_list = []
         for thread_cfg in todays_config:
             title = thread_cfg[self.KEY_TITLE] + (
@@ -44,9 +44,9 @@ class Tyrael(object):
             post_num = thread_cfg['post_num'] + 1
 
             thread = subreddit.submit(
-                title=title, text=text.substitute(count=post_num))
-            thread.set_suggested_sort('new')
-            thread.distinguish()
+                title=title, selftext=text.substitute(count=post_num))
+            thread.mod.suggested_sort('new')
+            thread.mod.distinguish()
 
             thread_cfg[self.KEY_POST_NUM] = post_num
             thread_cfg[self.KEY_THREAD_ID] = thread.id
@@ -55,15 +55,14 @@ class Tyrael(object):
         if logging:
             print("Updating config wiki page...")
         config[day] = mod_list
-        subreddit.edit_wiki_page(
-            page=self.WIKI_WEEKLY_THREADS_CONFIG, content=json.dumps(config))
+        subreddit.wiki[self.WIKI_WEEKLY_THREADS_CONFIG].edit(
+            content=json.dumps(config))
 
         # TODO: Move this to a different bot when we need real-time sidebar
         # updates
         if logging:
             print("Updating sidebar...")
-        subreddit_settings = subreddit.get_settings()
-        current_sidebar = subreddit_settings['description']
+        current_sidebar = subreddit.description
         sentinel = '[~s~](/s)'
         sentinel_pos = current_sidebar.find(sentinel)
         current_sidebar = current_sidebar[sentinel_pos + len(sentinel):]
@@ -84,4 +83,4 @@ class Tyrael(object):
             threads=' '.join(thread_links),
             sentinel=sentinel,
             sidebar=current_sidebar)
-        subreddit.update_settings(description=new_sidebar)
+        subreddit.mod.update(description=new_sidebar)

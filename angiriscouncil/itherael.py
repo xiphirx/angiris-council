@@ -32,9 +32,8 @@ Excluding customer service representatives.
         return c
 
     def _get_config(self):
-        subreddit = self.reddit.get_subreddit(self.subreddit)
-        config_json = subreddit.get_wiki_page(
-            self.WIKI_BLUETRACKER_CONFIG).content_md
+        subreddit = self.reddit.subreddit(self.subreddit)
+        config_json = subreddit.wiki[self.WIKI_BLUETRACKER_CONFIG].content_md
         config = json.loads(config_json)
         config['subreddits'] = [x.lower() for x in config['subreddits']]
         return config
@@ -60,7 +59,7 @@ Excluding customer service representatives.
             print('Gathering lore [2/2]...')
         lore_cs = self.gather_lore(config['users_cs'], config['subreddits'])
 
-        subreddit = self.reddit.get_subreddit(self.subreddit)
+        subreddit = self.reddit.subreddit(self.subreddit)
 
         # Everyone
         if logging:
@@ -68,7 +67,8 @@ Excluding customer service representatives.
         script = [self.header.substitute(
             r=self.subreddit, wiki_page=self.WIKI_BLUETRACKER_NOCS)]
         script.append(self.scribe(self._merge_dict_lists(lore, lore_cs)))
-        subreddit.edit_wiki_page(page=page, content=''.join(script))
+        subreddit.wiki[page].edit(content=''.join(script),
+                                  reason="Itherael Blue Tracker")
 
         # No customer service
         if logging:
@@ -76,7 +76,8 @@ Excluding customer service representatives.
         script = [self.header.substitute(
             r=self.subreddit, wiki_page=self.WIKI_BLUETRACKER)]
         script.append(self.scribe(lore))
-        subreddit.edit_wiki_page(page=page_nocs, content=''.join(script))
+        subreddit.wiki[page_nocs].edit(content=''.join(script), 
+                                       reason="Itherael Blue Tracker")
 
         if logging:
             print('Done')
@@ -100,12 +101,11 @@ Excluding customer service representatives.
         return ''.join(script)
 
     def gather_lore(self, subjects, topics):
-        comment_limit = 10
         lore = {}
         now = time.time()
         for name in subjects:
-            user = self.reddit.get_redditor(name)
-            for datum in user.get_comments(limit=comment_limit):
+            user = self.reddit.redditor(name)
+            for datum in user.comments.new(limit=10):
                 if now - datum.created_utc >= 60 * 60 * 24 * 10:  # Ten days
                     continue
 

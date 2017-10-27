@@ -17,14 +17,13 @@ class Auriel(object):
         self.subreddit = subreddit
 
     def _get_config(self):
-        subreddit = self.reddit.get_subreddit(self.subreddit)
-        config_json = subreddit.get_wiki_page(
-            self.WIKI_COUNTDOWN_CONFIG).content_md
+        subreddit = self.reddit.subreddit(self.subreddit)
+        config_json = subreddit.wiki[self.WIKI_COUNTDOWN_CONFIG].content_md
         return json.loads(config_json)
 
     def update_countdown(self, logging=False):
         config = self._get_config()
-        subreddit = self.reddit.get_subreddit(self.subreddit)
+        subreddit = self.reddit.subreddit(self.subreddit)
 
         countdowns_md = ''
         for countdown_config in config:
@@ -62,8 +61,7 @@ class Auriel(object):
         if logging:
             print("Updating sidebar...")
 
-        subreddit_settings = subreddit.get_settings()
-        current_sidebar = subreddit_settings['description']
+        current_sidebar = subreddit.description
 
         # TODO: This is a hack, figure out a good way to sync sidebar updates
         other_sentinel = '[~s~](/s)'
@@ -81,4 +79,4 @@ class Auriel(object):
                 countdown=countdowns_md,
                 sentinel=sentinel,
                 sidebar=current_sidebar)
-        subreddit.update_settings(description=new_sidebar)
+        subreddit.mod.update(description=new_sidebar)
